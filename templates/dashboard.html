@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+</head>
+
+
+
+<body>
+    <div class="navbar">
+        <div class="navbar-logo">
+            <!-- Add the ESFORGE logo image here -->
+            <img src="{{ url_for('static', filename='Images/image.png') }}">
+        </div>
+        <div class="navbar-links">
+            <a  href="{{ url_for('dashboard') }}">Autoclaves</a>
+            <a href="{{ url_for('recipes') }}">Recipes</a>
+            <!-- <a onclick="Redirect()" href="{{ url_for('recipes') }}">Recipes</a> -->
+            
+        </div>
+        
+    </div>
+    <div class="main-content">
+        <div class="tile blue" onclick="openPopup(this)">
+            <div>190°</div>
+            <div>101.3 kPa</div>
+            <div>Current State</div>
+            <div>01:37:09</div>
+        </div>
+        <div class="tile blue" onclick="openPopup(this)">
+            <div>190°</div>
+            <div>101.3 kPa</div>
+            <div>Current State</div>
+            <div>01:37:09</div>
+        </div>
+        <div class="tile pink" onclick="openPopup(this)">
+            <div>190°</div>
+            <div>101.3 kPa</div>
+            <div>Current State</div>
+            <div>01:37:09</div>
+        </div>
+        <div class="tile grey" onclick="openPopup(this)">
+            <div>190°</div>
+            <div>101.3 kPa</div>
+            <div>Current State</div>
+            <div>01:37:09</div>
+        </div>
+        <div class="tile black" onclick="openPopup(this)">
+            <div>190°</div>
+            <div>101.3 kPa</div>
+            <div>Current State</div>
+            <div>01:37:09</div>
+        </div>
+    </div>
+</div>
+
+<div id="popup" class="popup hidden">
+    <div class="popup-content" onclick="closePopup()">
+        <button class="close-btn" >&times;</button>
+        <div class="popup-header">
+            <span>190°</span>
+            <span>101.3 kPa</span>
+            <span>Current State</span>
+            <span>01:37:09</span>
+            
+        </div>
+        <div class="popup-recipe"><a class="Head">Recipe:</a> Name of the Recipe</div>
+        <div class="popup-footer">
+            <button class="Butt" onclick="startRecipe()">Start</button>
+            <button class="Butt" onclick="stopRecipe()">Stop</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openPopup(tile) {
+        var popup = document.getElementById("popup");
+        // You can access the tile's content if needed to update popup details
+        // For example, you could copy content from the tile to the popup
+        popup.classList.remove("hidden");
+    }
+
+    function startRecipe() {
+        // Add logic to start the recipe
+        alert("Start the recipe!"); // Placeholder action
+    }
+
+    function stopRecipe() {
+        // Add logic to stop the recipe
+        alert("Stop the recipe!"); // Placeholder action
+    }
+
+    // Optional: add a function to close the popup
+    function closePopup() {
+        document.getElementById("popup").classList.add("hidden");
+        console.log(document.getElementById("popup").classList)
+    }
+    function Redirect(){
+        alert("recipes");
+    }
+//     function closePopup() {
+//     var popup = document.getElementById("popup");
+//     popup.classList.add("hidden");
+// }
+
+</script>
+
+</html>

@@ -1,0 +1,339 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* three columns */
+    grid-template-rows: 80px 1fr; /* adjust the 80px to match your navbar's height */
+    gap: 15px;
+    padding: 20px;
+    background-color: #E9E9E9;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    height: 100vh;
+}
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    grid-row: 2; /* starts at the second row, below the navbar */
+    padding: 20px;
+    margin-left: 15%;
+}
+
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;  /* Adjust as needed */
+    width: 300px;   /* Adjust as needed */
+    padding: 20px;
+    border-radius: 32px;
+}
+
+.tile > div {
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px; /* Space between each line, adjust as needed */
+}
+
+
+.blue {
+    background-color: #007BFF;
+    color: white;
+}
+
+.pink {
+    background-color: #FF6B9E;
+    color: white;
+}
+
+.grey {
+    background-color: #B0B0B0;
+    color: white;
+}
+
+.black {
+    background-color: #000000;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2F2F8D; /* Adjust this color based on your image's background */
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    padding: 30px 0; /* Adjust as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow below the navbar */
+    z-index: 1000; /* Ensures the navbar is above other page content */
+    align-items: center;
+}
+
+.navbar-logo {
+    position: absolute; /* Positions the logo absolutely within the navbar */
+    padding: 20px;
+    left: 20px; /* Puts the logo 20px from the left edge of the navbar */
+}
+
+.navbar-logo img {
+    height: 50px; /* Adjust based on your logo's size */
+}
+
+.navbar-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px; /* Adjust as needed */
+}
+
+.navbar-links a:hover {
+    text-decoration: underline; /* Optional: Underlines the link on hover */
+}
+
+/* Popup styles */
+.navbar-add-recipe {
+    
+   align-self: flex-end;
+   margin-left: 100px;
+}
+.navbar-add-recipe a {
+
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px; /* Adjust as needed */
+    padding: 10px 20px; /* Adds padding for clickable area */
+    background: #4CAF50; /* Example color for the button */
+    border-radius: 5px; /* Rounded corners for the button */
+}
+
+.navbar-add-recipe a:hover {
+    background-color: #46a049; /* Darker shade on hover */
+}
+
+.popup.hidden {
+    display: none; /* Hide the popup by default */
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    z-index: 1001; /* Above everything else */
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 80%; /* Adjust based on your content */
+    max-width: 600px; /* Maximum width */
+}
+
+.close-btn {
+    float: right;
+    background: #ccc;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.close-btn:hover {
+    background: #bbb;
+}
+
+.popup-header, .popup-footer {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.popup-header span, .popup-footer button {
+    margin: 0 5px;
+}
+
+.popup-recipe {
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* Form styling */
+#recipeForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group {
+    margin: 10px 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="number"],
+.form-group input[type="time"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-group input[type="number"]:focus,
+.form-group input[type="time"]:focus,
+.form-group select:focus {
+    border-color: #2F2F8D;
+    outline: none;
+}
+
+label {
+    display: block; /* Makes the label take the full width, causing the input to appear on the next line */
+    margin-top: 10px; /* Adds space on top of the label */
+    margin-bottom: 5px; /* Adds some space between the label and the input field */
+}
+
+input[type="number"],
+select,
+input[type="time"] {
+    width: 100%; /* Full width */
+    padding: 8px; /* Some padding inside the input box */
+    margin-bottom: 15px; /* Space after the input */
+    border: 1px solid #ccc; /* Border around the input */
+    border-radius: 4px; /* Rounded borders */
+}
+
+/* Styles for the container of each sequence */
+.sequence-container {
+    margin-bottom: 20px; /* Space between each sequence */
+}
+
+/* Clearfix for the sequence container */
+.sequence-container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.sequence-scrollable {
+    max-height: 300px; /* or the height you desire */
+    overflow-y: auto;
+    margin-bottom: 20px; /* spacing between the last sequence and the submit button */
+}
+.remove-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #f44336; /* Example red color for remove button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+.radio-option {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
+button[type="submit"] {
+    padding: 10px 15px;
+    background-color: #2F2F8D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #4040b2;
+}
+
+.sequence-step {
+    background-color: #f2f2f2;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.sequence-step p {
+    margin: 0; /* Removes default paragraph margin */
+}
+
+/* Add responsiveness */
+@media (max-width: 768px) {
+    .popup-content {
+        width: 90%;
+    }
+}
+
+
+  .close-btn {
+    margin-left: auto; /* Push the button to the right */
+    cursor: pointer; 
+    border: none; 
+    background: none;
+    padding: 0;
+    color: #aaa;
+}
+
+.close-btn:hover {
+    color: #777;
+}
+
+
+/* Style your buttons as needed */
+
+
+.recipe-list {
+    list-style-type: none; /* Removes default list bullets */
+    padding: 0; /* Removes default padding */
+    margin: 0 20px; /* Adds horizontal margins to the entire list */
+}
+.recipe-heading h1 {
+    text-align: center; /* Center the heading text */
+    margin: 20px 0; /* Add some space above and below the heading */
+    color: #333; /* Give the heading a color */
+    font-size: 2em; /* Increase the size of the heading */
+    /* Add more styling properties as needed */
+}
+
+.recipe-item {
+    background-color: #fff; /* White background */
+    border: 1px solid #ddd; /* Light grey border */
+    padding: 15px; /* Padding inside each list item */
+    margin-bottom: 10px; /* Space between list items */
+    display: flex; /* Enables flexbox layout */
+    align-items: center; /* Vertically centers the content */
+    justify-content: space-between; /* Spreads the items to fill the horizontal space */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow for depth */
+    width: 100%;
+    border-radius: 30px;
+}
+
+.recipe-item h3 {
+    margin: 0; /* Removes default margins from h3 */
+    flex-grow: 1; /* Allows the title to grow and fill the space */
+    padding-right: 20px; /* Adds some space between the title and details */
+}
+

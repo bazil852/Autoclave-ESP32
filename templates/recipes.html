@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dashboard</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+    </head>
+    
+<body>
+    <!-- Navigation Bar (same as in your main page) -->
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="{{ url_for('static', filename='Images/image.png') }}">
+        </div>
+        <div class="navbar-links">
+            <a href="{{ url_for('dashboard') }}">Autoclaves</a>
+            <a href="{{ url_for('recipes') }}">Recipes</a>
+        </div>
+
+        <div onclick="openPopup(this)" class="navbar-add-recipe">
+            <a >Add a Recipe</a>
+        </div>
+    </div>
+
+    <!-- Main content where the recipes are listed -->
+    <div class="main-content">
+        <div class="recipe-heading">
+            <h1>Recipes</h1>
+        </div>
+        <ul class="recipe-list">
+            {% for recipe in recipes %}
+            <li class="recipe-item">
+                <h3>{{ recipe.name }}</h3>
+                <pre>{{ recipe.details }}</pre>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="popup" class="popup hidden">
+        <div class="popup-content">
+            <button class="close-btn" onclick="closePopup()">&times;</button>
+            <form id="recipeForm">
+                <div class="form-group">
+                    <label for="RecipeName">Name</label>
+                    <input type="text" id="RecipeName" name="RecipeName" placeholder="Enter Name">
+                    <label for="sequenceDropdown">Add a sequence:</label>
+                    <select id="sequenceDropdown" onchange="addSequence(this.value)">
+                        <option value="">Select...</option>
+                        <option value="drain">Drain</option>
+                        <option value="steam">Steam</option>
+                        <option value="air">Air</option>
+                        <option value="water">Water</option>
+                        <option value="time">Time</option>
+                    </select>
+                </div>
+                <div id="sequenceContainer" class="sequence-scrollable">
+                    <!-- Sequence fields will be added here dynamically -->
+                </div>
+                
+                <button type="submit">Create Recipe</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Recipe Popup -->
+        <div id="editPopup" class="popup hidden">
+            <div class="popup-content">
+                <button class="close-btn" onclick="closeEditPopup()">&times;</button>
+                <form id="editRecipeForm">
+                    <!-- Form content populated by JavaScript -->
+                </form>
+            </div>
+        </div>
+    
+
+    <!-- Include your site's footer here if you have one -->
+
+
+    <script>
+
+        function openPopup(tile) {
+            var popup = document.getElementById("popup");
+            popup.classList.remove("hidden");
+        }
+    
+        function startRecipe() {
+            alert("Start the recipe!"); 
+        }
+
+        function removeSequence(sequenceDiv) {
+            sequenceDiv.remove();
+        }
+    
+        function stopRecipe() {
+            alert("Stop the recipe!");
+        }
+        
+        function closePopup() {
+            document.getElementById("popup").classList.add("hidden");
+            console.log(document.getElementById("popup").classList)
+        }
+
+        function addSequence(sequenceType) {
+            var container = document.getElementById('sequenceContainer');
+
+            var div = document.createElement('div');
+            div.className = 'sequence-step';
+
+            if (sequenceType === 'drain') {
+                div.innerHTML = `
+                    <div class="sequence-container">
+                        <label for="drainOption">Drain:</label>
+                        <select id="drainOption" name="drainOption">
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                `;
+                    } 
+            if (sequenceType === 'steam') {
+                div.innerHTML = `
+                    <div class="sequence-container">
+                        <label>Select Steam Parameter:</label>
+                        <div class="radio-option">
+                            <input type="radio" id="optionPressure" name="steamOption" value="pressure" checked>
+                            <label for="optionPressure">Pressure</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="optionTemperature" name="steamOption" value="temperature">
+                            <label for="optionTemperature">Temperature</label>
+                        </div>
+                    </div>
+                    <div class="sequence-container" id="steamPressureContainer">
+                        
+                        <input type="number" id="steamPressure" name="steamPressure" min="0">
+                    </div>
+                    <div class="sequence-container" id="steamTemperatureContainer" style="display: none;">
+                        
+                        <input type="number" id="steamTemperature" name="steamTemperature" min="0" disabled>
+                    </div>
+                `;
+
+                
+            }
+            else if (sequenceType === 'air') {
+                div.innerHTML = `
+                <div class="sequence-container">
+                    <label for="airPressure">Air Pressure:</label>
+                    <input type="number" id="airPressure" name="airPressure" min="0">
+                </div>
+                `;
+            } 
+            else if (sequenceType === 'water') {
+                div.innerHTML = `
+                <div class="sequence-container">
+                    <label for="water">Water :</label>
+                    <input type="number" id="water" name="water" min="0">
+                </div>
+                `;
+            } 
+            else if (sequenceType === 'time') {
+                div.innerHTML = `
+                <div class="sequence-container">
+                    <label for="timeDuration">Time Duration:</label>
+                    <input type="time" id="timeDuration" name="timeDuration">
+                </div>
+                `;
+            }
+        
+
+            let removeButton = document.createElement('button');
+            removeButton.innerText = 'Remove';
+            removeButton.type = 'button'; // so it doesn't submit the form
+            removeButton.className = 'remove-btn'; // Add a class for styling
+            removeButton.onclick = function() { removeSequence(div); }; // Pass the parent div to remove
+            div.appendChild(removeButton);
+            container.appendChild(div);
+            document.getElementById('sequenceDropdown').selectedIndex = 0;
+        }
+
+    
+        document.getElementById('recipeForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Object to keep track of the input counts
+    let inputCounts = {};
+
+    // Get the recipe name
+    var recipeNameValue = document.getElementById('RecipeName').value.trim();
+    if (!recipeNameValue) {
+        alert("Please enter a name for the recipe.");
+        return;
+    }
+
+    // Compile all sequence steps into an object
+    var sequenceSteps = document.querySelectorAll('.sequence-step');
+    var sequenceData = {};
+
+    sequenceSteps.forEach(function(stepDiv, index) {
+        // Use the index to create unique names
+        var inputs = stepDiv.querySelectorAll('input, select');
+        inputs.forEach(function(input) {
+            // Handle radio buttons
+            if (input.type === 'radio') {
+                if (input.checked) {
+                    sequenceData[input.name + (inputCounts[input.name] ? inputCounts[input.name] : '')] = input.value;
+                }
+            } else if (input.type !== 'button') {  // Make sure to not include button in the sequence data
+                // Check if the input name already exists, if so append a number
+                if (sequenceData.hasOwnProperty(input.name)) {
+                    // Increment or initialize the count for this input name
+                    inputCounts[input.name] = inputCounts[input.name] ? inputCounts[input.name] + 1 : 2;
+                    sequenceData[input.name + inputCounts[input.name]] = input.value;
+                } else {
+                    sequenceData[input.name] = input.value;
+                }
+            }
+        });
+    });
+
+    // Create a JSON object with the recipe name as the key
+    var recipeJSON = {};
+    recipeJSON[recipeNameValue] = sequenceData;
+
+    // Convert the sequence data to a JSON string
+    var json = JSON.stringify(recipeJSON, null, 2);
+    
+    // Log the JSON string to console (for demonstration purposes, you might save this to server)
+    console.log(json);
+        
+        // Send the JSON data to the server
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save_recipe', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert('Recipe saved!');
+            }
+        };
+        xhr.send(json);
+    });
+
+
+            function openEditPopup(recipe) {
+            var popup = document.getElementById("editPopup");
+            // Populate your form fields with the recipe details
+            // For example, you can set the value of an input like this:
+            // document.getElementById('editRecipeName').value = recipe.name;
+            // ... (more form fields)
+
+            popup.classList.remove("hidden");
+        }
+
+        function closeEditPopup() {
+            document.getElementById("editPopup").classList.add("hidden");
+        }
+
+        // This function will be called when the edit form is submitted
+        function saveRecipe() {
+            event.preventDefault();
+            // Serialize form data and prepare it to send to the server
+            // ... (code to serialize form data)
+
+            // Send the AJAX request to the server with the updated recipe data
+            // ... (AJAX call to your server)
+        }
+
+        // Modify the recipe list items to call the edit popup function on click
+        document.querySelectorAll('.recipe-item').forEach(item => {
+            item.addEventListener('click', function() {
+                openEditPopup({
+                    // Pass the recipe details that you need to edit
+                    name: this.querySelector('h3').innerText,
+                    // ... (other details)
+                });
+            });
+        });
+
+    
+    </script>
+
+</body>
+</html>

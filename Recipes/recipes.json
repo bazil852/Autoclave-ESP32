@@ -1,0 +1,14 @@
+{
+    "Bazil": {
+        "drainOption": "open"
+    },
+    "abdur": {
+        "drainOption": "closed",
+        "steamOption": "pressure",
+        "steamPressure": "3213",
+        "steamTemperature": "",
+        "airPressure": "213",
+        "timeDuration": "03:12",
+        "water": "3123"
+    }
+}
