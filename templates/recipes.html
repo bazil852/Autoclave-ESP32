@@ -49,10 +49,13 @@
                     <select id="sequenceDropdown" onchange="addSequence(this.value)">
                         <option value="">Select...</option>
                         <option value="drain">Drain</option>
+                        <option value="steamIO">SteamI/O</option>
                         <option value="steam">Steam</option>
+                        <option value="airIO">AirI/O</option>
                         <option value="air">Air</option>
                         <option value="water">Water</option>
                         <option value="time">Time</option>
+                        <option value="temperature">Temperature</option>
                     </select>
                 </div>
                 <div id="sequenceContainer" class="sequence-scrollable">
@@ -104,9 +107,14 @@
 
         function addSequence(sequenceType) {
             var container = document.getElementById('sequenceContainer');
+            var uniqueId = Date.now(); // You can use other methods to generate unique IDs
 
+            var container = document.getElementById('sequenceContainer');
             var div = document.createElement('div');
             div.className = 'sequence-step';
+
+            var tempInputs = document.querySelectorAll('[name^="temp"]');
+            var nextTempId = "temp" + (tempInputs.length + 1);
 
             if (sequenceType === 'drain') {
                 div.innerHTML = `
@@ -119,31 +127,57 @@
                     </div>
                 `;
                     } 
-            if (sequenceType === 'steam') {
+            else if (sequenceType === 'steamIO') {
+                div.innerHTML = `
+                    <div class="sequence-container">
+                        <label for="steamIO">Steam:</label>
+                        <select id="steamIO" name="steamIO">
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                `;
+                    } 
+            else if (sequenceType === 'steam') {
                 div.innerHTML = `
                     <div class="sequence-container">
                         <label>Select Steam Parameter:</label>
                         <div class="radio-option">
-                            <input type="radio" id="optionPressure" name="steamOption" value="pressure" checked>
-                            <label for="optionPressure">Pressure</label>
+                            <input type="radio" id="optionPressure${uniqueId}" name="steamOption${uniqueId}" value="pressure" checked>
+                            <label for="optionPressure${uniqueId}">Pressure</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="optionTemperature" name="steamOption" value="temperature">
-                            <label for="optionTemperature">Temperature</label>
+                            <input type="radio" id="optionTemperature${uniqueId}" name="steamOption${uniqueId}" value="temperature">
+                            <label for="optionTemperature${uniqueId}">Temperature</label>
                         </div>
                     </div>
-                    <div class="sequence-container" id="steamPressureContainer">
-                        
-                        <input type="number" id="steamPressure" name="steamPressure" min="0">
+                    <div class="sequence-container" id="steamPressureContainer${uniqueId}">
+                        <input type="number" id="steamPressure${uniqueId}" name="steamPressure${uniqueId}" min="0">
                     </div>
-                    <div class="sequence-container" id="steamTemperatureContainer" style="display: none;">
-                        
-                        <input type="number" id="steamTemperature" name="steamTemperature" min="0" disabled>
+                    <div class="sequence-container" id="steamTemperatureContainer${uniqueId}" style="display: none;">
+                        <input type="number" id="steamTemperature${uniqueId}" name="steamTemperature${uniqueId}" min="0" disabled>
                     </div>
                 `;
-
-                
+                    }
+            else if (sequenceType === 'temperature') {
+                div.innerHTML = `
+                    <div class="sequence-container">
+                        <label for="${nextTempId}">Temperature ${tempInputs.length + 1}:</label>
+                        <input type="number" id="${nextTempId}" name="${nextTempId}" min="0" placeholder="Enter temperature">
+                    </div>
+                `;
             }
+            else if (sequenceType === 'airIO') {
+                div.innerHTML = `
+                    <div class="sequence-container">
+                        <label for="airIO">Air:</label>
+                        <select id="airIO" name="airIO">
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                `;
+                    } 
             else if (sequenceType === 'air') {
                 div.innerHTML = `
                 <div class="sequence-container">
@@ -154,21 +188,24 @@
             } 
             else if (sequenceType === 'water') {
                 div.innerHTML = `
-                <div class="sequence-container">
-                    <label for="water">Water :</label>
-                    <input type="number" id="water" name="water" min="0">
-                </div>
+                    <div class="sequence-container">
+                        <label for="water">Water:</label>
+                        <select id="water" name="water">
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
                 `;
-            } 
+                    }
             else if (sequenceType === 'time') {
                 div.innerHTML = `
                 <div class="sequence-container">
-                    <label for="timeDuration">Time Duration:</label>
-                    <input type="time" id="timeDuration" name="timeDuration">
+                    <label for="timeDuration">Time Duration (minutes):</label>
+                    <input type="number" id="timeDuration" name="timeDuration" min="0" step="any" placeholder="Enter duration in minutes">
                 </div>
                 `;
             }
-        
+                    
 
             let removeButton = document.createElement('button');
             removeButton.innerText = 'Remove';
